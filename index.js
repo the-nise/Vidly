@@ -16,6 +16,22 @@ function validateGenre(genre) {
     return Joi.validate(genre, movieSchema)
 }
 
+function lookUpGenre(genres, req) {
+    return genres.find(genre => genre.id === parseInt(req.params.id))
+    
+}
+
+app.post('/api/genres', (req, res) => {
+    const { error } = validateGenre(req.body)
+    if (error) return res.status(400).send(error.details[0].message)
+    const genre = {
+        id: genres.length + 1,
+        genre: req.body.genre
+    }
+    genres.push(genre)
+    res.send(genre)
+})
+
 app.get('/', (req, res) => {
     res.send("Sou um mero placeholder de home.")
 })
@@ -25,18 +41,29 @@ app.get('/api/genres', (req, res) => {
 }) 
 
 app.get('/api/genres/:id', (req, res) => {
-    const genre = genres.find(genre => genre.id === req.params.id)
+    const genre = validagenres.find(genre => genre.id === parseInt(req.params.id))
     if (!genre) return res.status(404).send('The genre with the given ID was not found.')
     res.send(genre)
 })
 
-app.post('/api/genres', (req, res) => {
-    const { error } = validateCourse(req.body)
+app.put('/api/genres/:id', (req, res) => {
+    const genre = lookUpGenre(genres, req)
+    if (!genre) return res.status(404).send('The genre with the given ID was not found.')
+    const { error } = validateGenre(req.body)
     if (error) return res.status(400).send(error.details[0].message)
-    const genre = {
-        id: genres.length + 1,
-        genre: req.body.genre
-    }
-    genres.push(genre)
+    genre.genre = req.body.genre
     res.send(genre)
 })
+
+app.delete('/api/genres/:id', (req, res) => {
+    const genre = lookUpGenre(genres, req)
+    if (!genre) return res.status(404).send('The genre with the given ID was not found.')
+    const index = genres.indexOf(genre)
+    genres.splice(index, 1)
+    res.send(genre)
+})
+
+
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}`))
