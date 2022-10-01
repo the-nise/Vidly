@@ -1,8 +1,16 @@
+const helmet = require('helmet')
 const Joi = require('joi')
+const logger = require('./logger')
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
+app.use(helmet())
+app.use(logger)
+app.use(morgan('tiny'))
 
 const genres = [
     {id: 1, genre: "Horror"},
@@ -18,7 +26,6 @@ function validateGenre(genre) {
 
 function lookUpGenre(genres, req) {
     return genres.find(genre => genre.id === parseInt(req.params.id))
-    
 }
 
 app.post('/api/genres', (req, res) => {
