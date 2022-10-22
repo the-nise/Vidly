@@ -1,3 +1,4 @@
+const config = require('config')
 const helmet = require('helmet')
 const Joi = require('joi')
 const logger = require('./logger')
@@ -11,6 +12,12 @@ app.use(express.static('public'))
 app.use(helmet())
 app.use(logger)
 app.use(morgan('tiny'))
+
+
+console.log(`${process.env.NODE_ENV}`);
+// console.log("Application Name: " + config.get('name'));
+// console.log("Mail Server: " + config.get('mail.host'));
+
 
 const genres = [
     {id: 1, genre: "Horror"},
@@ -47,8 +54,8 @@ app.get('/api/genres', (req, res) => {
     res.send(genres)
 }) 
 
-app.get('/api/genres/:id', (req, res) => {
-    const genre = validagenres.find(genre => genre.id === parseInt(req.params.id))
+app.get('/api/genres', (req, res) => {
+    const genre = lookUpGenre(genres, req)
     if (!genre) return res.status(404).send('The genre with the given ID was not found.')
     res.send(genre)
 })
@@ -74,3 +81,4 @@ app.delete('/api/genres/:id', (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}`))
+
