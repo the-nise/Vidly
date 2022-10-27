@@ -1,10 +1,6 @@
 const { Customer } = require('../../models/customers')
 const router = require('../router')
 
-router.get('/', (req, res) => {
-    res.render('index', {title: 'Vidly App', message: "Hello."})
-})
-
 router.get('/api/customer', async (req, res) => {
     const customer = await Customer.find().sort('name')
     res.send(customer)

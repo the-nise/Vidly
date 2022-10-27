@@ -8,7 +8,7 @@ router.put('/api/genres/:id', async (req, res) => {
     const genre = await Genre.findByIdAndUpdate(
         req.params.id,
         { 
-            genre: req.body.genre 
+            name: req.body.name 
         }, {
         new: true
     })

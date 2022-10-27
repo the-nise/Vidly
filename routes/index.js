@@ -6,4 +6,6 @@ require('./customers/create')
 require('./customers/read')
 require('./customers/update')
 require('./customers/delete')
-
+require('./movies/create')
+require('./rentals/create')
+require('./rentals/read')
