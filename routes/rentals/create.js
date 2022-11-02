@@ -1,7 +1,7 @@
 const { validateRental, Rental } = require('../../models/rentals')
+const router = require('../router')
 const { Movie } = require('../../models/movies')
 const { Customer } = require('../../models/customers')
-const router = require('../router')
 const Fawn = require('fawn')
 
 Fawn.init('mongodb://localhost/vidly')
